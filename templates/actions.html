@@ -7,132 +7,224 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
-            padding: 20px;
-            color: #333;
+            padding: 40px 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
         }
-        h1, h2, h3 {
-            color: #2c3e50;
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 100px;
+            margin-right: 20px;
+        }
+        h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 28px;
         }
         .topic-display {
             font-style: italic;
-            color: #7f8c8d;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .input-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 20px;
         }
         input[type="text"] {
             flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px;
+            border: 1px solid #444;
+            background-color: #2c2c2c;
+            color: #fff;
+            border-radius: 6px;
             font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
         }
         button {
-            padding: 10px 15px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
             color: white;
-            transition: background-color 0.3s;
+            transition: all 0.2s ease-in-out;
         }
         .btn-primary { background-color: #3498db; }
-        .btn-primary:hover { background-color: #2980b9; }
+        .btn-primary:hover { background-color: #2980b9; transform: translateY(-1px); }
         .btn-secondary { background-color: #2ecc71; }
-        .btn-secondary:hover { background-color: #27ae60; }
+        .btn-secondary:hover { background-color: #27ae60; transform: translateY(-1px); }
+        .btn-finalize { background-color: #9b59b6; margin-left: auto; }
+        .btn-finalize:hover { background-color: #8e44ad; }
 
         .suggestions-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         .suggestion-chip {
-            background-color: #e8f4f8;
-            border: 1px solid #3498db;
-            color: #2980b9;
-            padding: 5px 15px;
+            background-color: #2c3e50;
+            border: 1px solid #34495e;
+            color: #ecf0f1;
+            padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.2s;
         }
         .suggestion-chip:hover {
-            background-color: #3498db;
-            color: white;
+            background-color: #34495e;
+            border-color: #3498db;
         }
 
         /* List Styles */
         .actions-list {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
         .action-item {
-            background-color: #fdfdfd;
-            border: 1px solid #e1e8ed;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            padding: 20px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
         .action-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             margin-top: 0;
-            margin-bottom: 15px;
-            color: #2980b9;
+            margin-bottom: 20px;
+            color: #3498db;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
         }
         .hazards-list {
             list-style-type: none;
             padding-left: 0;
+            margin: 0;
         }
         .hazard-item {
-            background-color: #fffaf0;
+            background-color: #332d2d;
             border-left: 4px solid #e67e22;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 0 4px 4px 0;
+            padding: 18px;
+            margin-bottom: 16px;
+            border-radius: 0 6px 6px 0;
         }
         .hazard-title {
             font-weight: bold;
-            color: #d35400;
-            margin-bottom: 10px;
+            color: #e67e22;
+            margin-bottom: 12px;
+            font-size: 18px;
         }
         .controls-list {
-            padding-left: 20px;
-            color: #27ae60;
+            padding-left: 24px;
+            color: #2ecc71;
+            margin: 0;
+            line-height: 1.6;
         }
         .control-item {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .loading {
             font-style: italic;
-            color: #95a5a6;
+            color: #7f8c8d;
             font-size: 14px;
+        }
+
+        /* Table Styles for Finalize */
+        #finalTableContainer {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+            border-right: 1px solid #444;
+        }
+        th {
+            background-color: #333;
+            font-weight: bold;
+            color: #fff;
+        }
+        th:last-child, td:last-child {
+            border-right: none;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .copy-success {
+            color: #2ecc71;
+            font-weight: bold;
+            margin-left: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hazard Assessment</h1>
-        <div class="topic-display" id="topicDisplay">Topic: Loading...</div>
+    <div class="container" id="mainApp">
+        <div class="header">
+            <img src="/static/logo.png" alt="HANK Logo" class="logo">
+            <h1>Hazard Assessment</h1>
+        </div>
 
-        <div class="input-group">
+        <div class="topic-display">
+            <span id="topicDisplay">Topic: Loading...</span>
+            <button class="btn-finalize" onclick="finalizeAssessment()" id="finalizeBtn">Finalize Assessment</button>
+        </div>
+
+        <div class="input-group" id="inputSection">
             <input type="text" id="actionInput" placeholder="Enter an action to assess">
             <button class="btn-primary" onclick="submitAction()">Add Action</button>
             <button class="btn-secondary" onclick="suggestActions()" id="suggestBtn">Suggest Actions</button>
@@ -143,6 +235,19 @@
         <ul id="actionsContainer" class="actions-list">
             <!-- Dynamic content will go here -->
         </ul>
+
+        <!-- Final Table Container -->
+        <div id="finalTableContainer">
+            <div class="table-actions">
+                <h2 style="margin: 0;">Final Report</h2>
+                <div>
+                    <span id="copyMessage" class="copy-success">Copied to clipboard!</span>
+                    <button class="btn-primary" onclick="copyTable()">Copy Table</button>
+                    <button class="btn-secondary" onclick="resetView()" style="background-color: #7f8c8d;">Back to Edit</button>
+                </div>
+            </div>
+            <div id="tableWrapper"></div>
+        </div>
     </div>
 
     <script>
@@ -182,7 +287,7 @@
                         chip.onclick = () => {
                             document.getElementById('actionInput').value = action;
                             submitAction();
-                            chip.remove(); // Remove chip once used
+                            chip.remove();
                         };
                         area.appendChild(chip);
                     });
@@ -191,7 +296,7 @@
                 }
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
-                area.innerHTML = '<span class="loading" style="color:red;">Error loading suggestions.</span>';
+                area.innerHTML = '<span class="loading" style="color:#e74c3c;">Error loading suggestions.</span>';
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Suggest Actions";
@@ -205,9 +310,8 @@
 
             if (!actionText) return;
 
-            input.value = ''; // clear input
+            input.value = '';
 
-            // Add action UI
             const container = document.getElementById('actionsContainer');
             const actionLi = document.createElement('li');
             actionLi.className = 'action-item';
@@ -216,16 +320,14 @@
                 <div class="loading" id="loading-${Date.now()}">Identifying hazards...</div>
                 <ul class="hazards-list" id="hazards-${Date.now()}"></ul>
             `;
-            container.prepend(actionLi); // Add to top
+            container.prepend(actionLi);
 
             const loadingEl = actionLi.querySelector('.loading');
             const hazardsUl = actionLi.querySelector('.hazards-list');
 
             try {
-                // Save action to backend (optional, following the prompt's instructions)
                 await fetch(`/api/add-action-step?action=${encodeURIComponent(actionText)}`, { method: 'POST' });
 
-                // Get Hazards
                 const hazardResponse = await fetch(`/api/add-hazard?topic=${encodeURIComponent(currentTopic)}&action=${encodeURIComponent(actionText)}`, {
                     method: 'POST'
                 });
@@ -239,7 +341,6 @@
                     return;
                 }
 
-                // Process each hazard
                 for (const hazard of hazards) {
                     const hazardId = `hazard-${Math.random().toString(36).substr(2, 9)}`;
                     const hazardLi = document.createElement('li');
@@ -251,18 +352,17 @@
                     `;
                     hazardsUl.appendChild(hazardLi);
 
-                    // Get Controls for this hazard
                     fetchControls(actionText, hazard, hazardId);
                 }
 
             } catch (error) {
                 console.error("Error processing action:", error);
                 loadingEl.textContent = "Error processing action.";
-                loadingEl.style.color = "red";
+                loadingEl.style.color = "#e74c3c";
             }
         }
 
-        // 3. Fetch Controls for a specific hazard
+        // 3. Fetch Controls
         async function fetchControls(actionText, hazard, hazardId) {
             const loadingEl = document.getElementById(`loading-${hazardId}`);
             const controlsUl = document.getElementById(`controls-${hazardId}`);
@@ -290,8 +390,120 @@
 
             } catch (error) {
                 console.error("Error fetching controls:", error);
-                loadingEl.textContent = "Error finding controls.";
-                loadingEl.style.color = "red";
+                if(loadingEl) {
+                    loadingEl.textContent = "Error finding controls.";
+                    loadingEl.style.color = "#e74c3c";
+                }
+            }
+        }
+
+        // 4. Finalize - Build HTML Table
+        function finalizeAssessment() {
+            const actionsList = document.querySelectorAll('.action-item');
+            if (actionsList.length === 0) {
+                alert("Please add at least one action before finalizing.");
+                return;
+            }
+
+            let tableHTML = `
+                <table id="assessmentTable">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Hazard</th>
+                            <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            actionsList.forEach(actionItem => {
+                const actionTitle = actionItem.querySelector('.action-title').textContent;
+                const hazards = actionItem.querySelectorAll('.hazard-item');
+
+                if (hazards.length === 0) {
+                    tableHTML += `<tr><td>${actionTitle}</td><td colspan="2">No hazards found.</td></tr>`;
+                    return;
+                }
+
+                hazards.forEach((hazardItem, hIndex) => {
+                    const hazardTitle = hazardItem.querySelector('.hazard-title').textContent;
+                    const controls = hazardItem.querySelectorAll('.control-item');
+
+                    let controlsHTML = '<ul style="margin:0; padding-left:20px;">';
+                    if (controls.length === 0) {
+                        controlsHTML = "No controls found.";
+                    } else {
+                        controls.forEach(control => {
+                            controlsHTML += `<li>${control.textContent}</li>`;
+                        });
+                        controlsHTML += '</ul>';
+                    }
+
+                    // Render rows (with rowspan for action title on first hazard)
+                    if (hIndex === 0) {
+                        tableHTML += `
+                            <tr>
+                                <td rowspan="${hazards.length}" style="vertical-align: top;"><strong>${actionTitle}</strong></td>
+                                <td style="vertical-align: top; color: #e67e22;">${hazardTitle}</td>
+                                <td style="vertical-align: top;">${controlsHTML}</td>
+                            </tr>
+                        `;
+                    } else {
+                        tableHTML += `
+                            <tr>
+                                <td style="vertical-align: top; color: #e67e22;">${hazardTitle}</td>
+                                <td style="vertical-align: top;">${controlsHTML}</td>
+                            </tr>
+                        `;
+                    }
+                });
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            // Hide main app elements
+            document.getElementById('inputSection').style.display = 'none';
+            document.getElementById('suggestionsArea').style.display = 'none';
+            document.getElementById('actionsContainer').style.display = 'none';
+            document.getElementById('finalizeBtn').style.display = 'none';
+
+            // Show table
+            const tableContainer = document.getElementById('finalTableContainer');
+            document.getElementById('tableWrapper').innerHTML = tableHTML;
+            tableContainer.style.display = 'block';
+        }
+
+        // 5. Reset View
+        function resetView() {
+            document.getElementById('inputSection').style.display = 'flex';
+            document.getElementById('suggestionsArea').style.display = 'flex';
+            document.getElementById('actionsContainer').style.display = 'block';
+            document.getElementById('finalizeBtn').style.display = 'block';
+            document.getElementById('finalTableContainer').style.display = 'none';
+        }
+
+        // 6. Copy Table to Clipboard
+        function copyTable() {
+            const table = document.getElementById('assessmentTable');
+            const range = document.createRange();
+            range.selectNode(table);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+
+            try {
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+
+                const msg = document.getElementById('copyMessage');
+                msg.style.opacity = '1';
+                setTimeout(() => { msg.style.opacity = '0'; }, 3000);
+            } catch(err) {
+                console.error("Failed to copy", err);
+                alert("Failed to copy table. Please manually select and copy it.");
             }
         }
     </script>

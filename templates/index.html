@@ -6,8 +6,9 @@
     <title>HANK - Setup</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,48 +17,64 @@
             height: 100vh;
         }
         .container {
-            background-color: #fff;
+            background-color: #1e1e1e;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
             text-align: center;
             max-width: 400px;
             width: 100%;
+            border: 1px solid #333;
+        }
+        .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
         }
         h1 {
-            color: #333;
-            margin-bottom: 20px;
+            color: #ffffff;
+            margin-top: 0;
+            margin-bottom: 10px;
         }
         p {
-            color: #666;
-            margin-bottom: 20px;
+            color: #b0b0b0;
+            margin-bottom: 30px;
         }
         input[type="text"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: 1px solid #444;
+            background-color: #2c2c2c;
+            color: #fff;
+            border-radius: 6px;
             box-sizing: border-box;
             font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
         }
         button {
-            background-color: #007bff;
+            background-color: #3498db;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
             width: 100%;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #2980b9;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="/static/logo.png" alt="HANK Logo" class="logo">
         <h1>Welcome to HANK</h1>
         <p>The Hazard Assessment and Navigation Kit</p>
         <form id="topicForm">
@@ -71,7 +88,6 @@
             e.preventDefault();
             const topic = document.getElementById('topicInput').value;
             if (topic) {
-                // Save the topic to the backend just in case (optional, based on existing routes)
                 try {
                     await fetch(`/api/set-user-topic?topic=${encodeURIComponent(topic)}`, {
                         method: 'POST'
@@ -80,10 +96,7 @@
                     console.error("Error saving topic to backend:", error);
                 }
 
-                // Save to localStorage
                 localStorage.setItem('hank_topic', topic);
-
-                // Redirect to actions screen
                 window.location.href = '/actions';
             }
         });
