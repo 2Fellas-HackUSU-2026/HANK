@@ -1,11 +1,11 @@
-from openai import OpenAI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from agent.agent import agent
+
 
 class HazardResponse(BaseModel):
     hazards: list[str]
 
-class ControlReponse(BaseModel):
+class ControlResponse(BaseModel):
     controls: list[str]
     
 
@@ -29,7 +29,6 @@ def add_hazards(topic: str, action: str):
     
     return hazards.hazards
 
-
 def add_controls(topic: str, action: str, hazard):
     """
     Prompts the agent to come up with controls associated with the hazrad. it should use the `topic` as context to decide with what lens to view the problem at hand, and it should use the `action` to make sure the controls are reasonable.  
@@ -50,19 +49,9 @@ def add_controls(topic: str, action: str, hazard):
     """
     query = f"What is a list of 1 to 8 controls to mitgate the {hazard}"
 
-    controls = agent(system_prompt= prompt, query= query, return_format= ControlReponse)
+    controls = agent(system_prompt= prompt, query= query, return_format= ControlResponse)
 
     return controls.controls
     
 def get_user_topic(topic: str):
-    topic = topic
     return topic
-
-def add_action(action_step: str):
-    action = action_step
-    return action
-
-def add_to_json(action: str, single_hazard: str, control_list: list[str]):
-    template = {"action_step": action, "hazards": {single_hazard: {"controls": [control]}} }
-
-    new_template = {"action": action, "hazards": [{"hazard": single_hazard, "controls": control_list}]}
