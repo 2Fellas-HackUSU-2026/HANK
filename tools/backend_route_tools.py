@@ -1,6 +1,10 @@
 from openai import OpenAI
 from pydantic import BaseModel, Field
+from agent.agent import agent
 
+class HazardResponse(BaseModel):
+    hazards: list[str]
+    
 
 def add_hazards(topic: str, action: str):
     """
@@ -15,11 +19,13 @@ def add_hazards(topic: str, action: str):
     :return type: list
     """
 
-    prompt = f"as an expert with {topic}, your job is to come up with a well thought out list of hazards that might be associated with {action}. The hazards you come up with should be relavent to the {action}. You should give the hazards as a list."
+    prompt = f"As an expert with {topic}, your job is to come up with a well thought out list of hazards that might be associated with {action}."
+    query = f"What is a list of 5 to 10 hazards when performing {action}"
 
-    #agent.invoke()
-    hazards = []
-    return hazards
+    hazards = agent(system_prompt= prompt, query= query, return_format= HazardResponse)
+    
+    return hazards.hazards
+
 
 def add_controls(topic: str, action: str, hazard):
     """
