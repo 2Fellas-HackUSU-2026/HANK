@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from tools.backend_route_tools import add_hazards, add_controls, user_topic, add_action
+from tools.backend_route_tools import add_hazards, add_controls, get_user_topic, add_action
 
 router = APIRouter()
 
@@ -16,7 +16,7 @@ def new_controls(topic: str, action: str, hazard: str):
 
 @router.post("/api/set-user-topic")
 def user_topic(topic: str):
-    topic = user_topic(topic)
+    topic = get_user_topic(topic)
     return {"topic": topic}
 
 @router.post("/api/add-action-step")
