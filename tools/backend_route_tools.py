@@ -1,4 +1,5 @@
-
+from openai import OpenAI
+from pydantic import BaseModel, Field
 
 def add_hazard(topic: str, action: str):
     """
