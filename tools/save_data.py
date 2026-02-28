@@ -6,6 +6,45 @@ ACTION_STORAGE = Path(__file__).resolve().parent.parent / "data" / "actions_stor
 
 ###This is for saving data to json
 
+def _normalize_hazard_entry(hazard_entry: dict) -> dict | None:
+    hazard = hazard_entry.get("hazard")
+    controls = hazard_entry.get("controls", [])
+
+    if not isinstance(hazard, str) or not hazard.strip():
+        return None
+
+    if not isinstance(controls, list):
+        controls = []
+
+    normalized_controls = [control for control in controls if isinstance(control, str) and control.strip()]
+    return {"hazard": hazard, "controls": normalized_controls}
+
+
+def _normalize_action_entry(action_entry: dict) -> dict | None:
+    action = action_entry.get("action")
+    hazards = action_entry.get("hazards", [])
+
+    # Backward compatibility: repair accidentally nested action objects.
+    if isinstance(action, dict):
+        action = action.get("action")
+
+    if not isinstance(action, str) or not action.strip():
+        return None
+
+    if not isinstance(hazards, list):
+        hazards = []
+
+    normalized_hazards: list[dict] = []
+    for hazard_entry in hazards:
+        if not isinstance(hazard_entry, dict):
+            continue
+        normalized = _normalize_hazard_entry(hazard_entry)
+        if normalized is None:
+            continue
+        normalized_hazards.append(normalized)
+
+    return {"action": action, "hazards": normalized_hazards}
+
 def load_actions() -> list[dict]:
     if not ACTION_STORAGE.exists() or ACTION_STORAGE.stat().st_size == 0:
         return []
@@ -13,7 +52,44 @@ def load_actions() -> list[dict]:
     try:
         with open(ACTION_STORAGE, "r", encoding="utf-8") as f:
             data = json.load(f)
-            return data if isinstance(data, list) else []
+
+            if not isinstance(data, list):
+                return []
+
+            merged_by_action: dict[str, dict] = {}
+            normalized_data: list[dict] = []
+
+            for action_entry in data:
+                if not isinstance(action_entry, dict):
+                    continue
+
+                normalized_action = _normalize_action_entry(action_entry)
+                if normalized_action is None:
+                    continue
+
+                action_key = normalized_action["action"]
+                existing_action = merged_by_action.get(action_key)
+                if existing_action is None:
+                    merged_by_action[action_key] = normalized_action
+                    normalized_data.append(normalized_action)
+                    continue
+
+                existing_hazards = existing_action.setdefault("hazards", [])
+                for hazard_entry in normalized_action["hazards"]:
+                    existing_hazard = next(
+                        (h for h in existing_hazards if h.get("hazard") == hazard_entry["hazard"]),
+                        None,
+                    )
+                    if existing_hazard is None:
+                        existing_hazards.append(hazard_entry)
+                        continue
+
+                    controls = existing_hazard.setdefault("controls", [])
+                    for control in hazard_entry.get("controls", []):
+                        if control not in controls:
+                            controls.append(control)
+
+            return normalized_data
     except json.JSONDecodeError:
         return []
     

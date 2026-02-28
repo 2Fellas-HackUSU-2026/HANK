@@ -3,19 +3,24 @@
         "action": "subgrade excavation",
         "hazards": [
             {
-                "hazard": "Uneven ground surfaces",
-                "controls": []
-            },
-            {
-                "hazard": "Trench collapses",
-                "controls": []
-            },
-            {
-                "hazard": "Equipment overturns",
-                "controls": []
+                "hazard": "Cave-ins",
+                "controls": [
+                    "Install trench boxes or shields for protection.",
+                    "Slope trench walls to prevent collapse.",
+                    "Use shoring to support trench walls.",
+                    "Conduct regular soil inspections and stability assessments.",
+                    "Limit proximity of heavy equipment near excavation edges.",
+                    "Implement entry and exit procedures for trenches.",
+                    "Provide proper lighting in excavation areas.",
+                    "Develop and enforce emergency response plans."
+                ]
             },
             {
                 "hazard": "Falling debris",
+                "controls": []
+            },
+            {
+                "hazard": "Utility strikes",
                 "controls": []
             },
             {
@@ -27,11 +32,7 @@
                 "controls": []
             },
             {
-                "hazard": "Underground utility strikes",
-                "controls": []
-            },
-            {
-                "hazard": "Flooding or water ingress",
+                "hazard": "Water accumulation",
                 "controls": []
             },
             {
@@ -39,16 +40,17 @@
                 "controls": []
             },
             {
-                "hazard": "Noise pollution",
+                "hazard": "Tripping hazards",
+                "controls": []
+            },
+            {
+                "hazard": "Inadequate shoring",
+                "controls": []
+            },
+            {
+                "hazard": "Toxic gas exposure",
                 "controls": []
             }
         ]
-    },
-    {
-        "action": {
-            "action": "subgrade excavation",
-            "hazards": []
-        },
-        "hazards": []
     }
 ]
