@@ -4,47 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HANK - Actions</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg-color: #f8f9fa;
-            --surface-color: #ffffff;
-            --primary-color: #007bff;
-            --primary-hover: #0056b3;
-            --text-color: #333333;
-            --text-muted: #6c757d;
-            --border-color: #e9ecef;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            /* Light Mode Variables */
+            --bg-gradient: radial-gradient(circle at top left, #e0c3fc 0%, #8ec5fc 100%);
+            --surface-color: rgba(255, 255, 255, 0.6);
+            --surface-border: rgba(255, 255, 255, 0.8);
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --text-color: #1f2937;
+            --text-muted: #4b5563;
+            --input-bg: rgba(255, 255, 255, 0.7);
+            --input-border: rgba(255, 255, 255, 0.9);
+            --input-text: #1f2937;
+            --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 
-            --hazard-color: #dc3545; /* Bootstrap danger red */
-            --control-color: #28a745; /* Bootstrap success green */
-            --action-color: #495057;
+            --hazard-color: #ef4444;
+            --hazard-bg: rgba(254, 226, 226, 0.5);
+            --control-color: #10b981;
+            --control-bg: rgba(209, 250, 229, 0.5);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Variables */
+            --bg-gradient: radial-gradient(circle at top left, #231557 0%, #44107a 29%, #ff1361 67%, #fff800 100%);
+            --surface-color: rgba(17, 24, 39, 0.6);
+            --surface-border: rgba(255, 255, 255, 0.1);
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --input-bg: rgba(31, 41, 55, 0.6);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --input-text: #f3f4f6;
+            --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+            --hazard-color: #fca5a5;
+            --hazard-bg: rgba(153, 27, 27, 0.3);
+            --control-color: #6ee7b7;
+            --control-bg: rgba(6, 78, 59, 0.3);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            background-size: cover;
             color: var(--text-color);
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: var(--surface-color);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--surface-border);
+            box-shadow: var(--shadow-glass);
+            border-radius: 16px;
         }
 
         /* Top Navigation Bar */
         .navbar {
-            background-color: var(--surface-color);
-            border-bottom: 1px solid var(--border-color);
-            height: 60px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 24px;
-            box-shadow: var(--shadow-sm);
+            padding: 0 32px;
+            margin: 16px;
+            border-radius: 20px;
             flex-shrink: 0;
             position: sticky;
-            top: 0;
+            top: 16px;
             z-index: 100;
         }
 
@@ -54,13 +91,15 @@
             gap: 12px;
             text-decoration: none;
             color: var(--text-color);
-            font-weight: 600;
-            font-size: 1.25rem;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.5px;
         }
 
         .navbar-logo {
-            height: 32px;
+            height: 36px;
             width: auto;
+            border-radius: 8px;
         }
 
         .nav-actions {
@@ -69,29 +108,36 @@
             gap: 16px;
         }
 
-        .settings-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
+        .icon-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
             cursor: pointer;
-            color: var(--text-muted);
-            transition: color 0.2s;
-            padding: 8px;
-            border-radius: 50%;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            padding: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
 
-        .settings-btn:hover {
-            color: var(--text-color);
-            background-color: var(--border-color);
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
         }
 
         .header-topic {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            font-style: italic;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--input-bg);
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--surface-border);
         }
 
         /* Main Layout */
@@ -99,16 +145,18 @@
             display: flex;
             flex: 1;
             padding: 24px;
-            gap: 24px;
-            max-width: 1400px;
+            gap: 32px;
+            max-width: 1600px;
             margin: 0 auto;
             width: 100%;
             box-sizing: border-box;
+            /* Layout flipped: Sidebar on the right */
+            flex-direction: row-reverse;
         }
 
         /* Sidebar for inputs */
         .sidebar {
-            width: 350px;
+            width: 380px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
@@ -116,11 +164,13 @@
         }
 
         .card {
-            background-color: var(--surface-color);
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
             padding: 24px;
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card h2 {
@@ -128,6 +178,9 @@
             font-size: 1.25rem;
             margin-bottom: 16px;
             color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Forms and Inputs */
@@ -139,89 +192,121 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #ced4da;
-            background-color: #fff;
-            color: #495057;
-            border-radius: 8px;
+            padding: 14px 16px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--input-text);
+            border-radius: 12px;
             box-sizing: border-box;
-            font-size: 1rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            background-color: var(--surface-color);
         }
 
         button.btn-primary {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
             color: white;
-            padding: 10px 20px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
-        button.btn-primary:hover { background-color: var(--primary-hover); }
-        button.btn-primary:disabled { background-color: #a0c4ff; cursor: not-allowed; }
+        button.btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+        }
+        button.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none;}
 
         button.btn-secondary {
-            background-color: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-color);
+            border: 1px solid var(--surface-border);
+            padding: 12px 20px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-weight: 500;
+            transition: all 0.3s ease;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         button.btn-secondary:hover {
-            background-color: var(--primary-color);
-            color: white;
+            background: rgba(255,255,255,0.2);
+            border-color: var(--primary-color);
         }
-        button.btn-secondary:disabled { border-color: #a0c4ff; color: #a0c4ff; cursor: not-allowed; }
 
         button.btn-success {
-            background-color: var(--control-color);
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            padding: 12px 24px;
+            padding: 16px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 1.1rem;
             font-weight: 600;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
             width: 100%;
             margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
-        button.btn-success:hover { background-color: #218838; }
+        button.btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+        }
 
         /* Suggestion Chips */
         .suggestions-area {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 16px;
         }
         .suggestion-chip {
-            background-color: #e9ecef;
-            color: #495057;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 0.85rem;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: background-color 0.2s;
-            border: 1px solid #ced4da;
+            transition: all 0.2s ease;
+            border: 1px solid var(--input-border);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: chipFadeIn 0.4s ease forwards;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .suggestion-chip:hover {
-            background-color: #dee2e6;
+            background-color: var(--surface-border);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        @keyframes chipFadeIn {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Main Content Area (Results) */
@@ -229,27 +314,26 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            overflow-y: auto;
+            gap: 20px;
         }
 
         .action-item {
-            background-color: var(--surface-color);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
+            padding: 32px;
+            margin-bottom: 24px;
             list-style: none;
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .action-title {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--action-color);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 16px;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--surface-border);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .hazards-list {
@@ -258,21 +342,30 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
 
         .hazard-item {
-            background-color: #fff5f5;
+            background-color: var(--hazard-bg);
             border-left: 4px solid var(--hazard-color);
-            padding: 16px;
-            border-radius: 0 8px 8px 0;
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .hazard-title {
             font-weight: 600;
             color: var(--hazard-color);
-            margin-bottom: 12px;
-            font-size: 1.1rem;
+            margin-bottom: 16px;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .controls-list {
@@ -281,88 +374,112 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .control-item {
-            background-color: #f0fff4;
+            background-color: var(--control-bg);
             border-left: 4px solid var(--control-color);
-            padding: 12px;
-            border-radius: 0 6px 6px 0;
-            color: #2f855a;
-            font-size: 0.95rem;
+            padding: 14px;
+            border-radius: 0 8px 8px 0;
+            color: var(--text-color);
+            font-size: 1rem;
+            animation: fadeIn 0.5s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .control-item i {
+            color: var(--control-color);
+            margin-top: 2px;
+            flex-shrink: 0;
         }
 
         .loading {
             color: var(--text-muted);
             font-style: italic;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
             gap: 8px;
+            padding: 10px 0;
         }
+
+        .lucide-spin {
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Final Table View */
         .final-table-container {
             display: none;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 24px;
-            background: var(--surface-color);
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
+            padding: 32px;
             box-sizing: border-box;
+            animation: fadeIn 0.5s ease;
         }
 
         .table-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
+            color: var(--text-color);
         }
 
         .table-header h2 {
             margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .table-actions {
             display: flex;
-            gap: 12px;
+            gap: 16px;
+            align-items: center;
         }
 
-        /* The stylized table we show to the user */
         #assessmentTable {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            background: var(--surface-color);
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         #assessmentTable th, #assessmentTable td {
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--surface-border);
             padding: 16px;
             text-align: left;
         }
 
         #assessmentTable th {
-            background-color: #f8f9fa;
+            background-color: rgba(0,0,0,0.05);
             font-weight: 600;
             color: var(--text-color);
         }
+        [data-theme="dark"] #assessmentTable th {
+            background-color: rgba(255,255,255,0.05);
+        }
 
         #assessmentTable td {
-            background-color: var(--surface-color);
             color: var(--text-color);
             vertical-align: top;
         }
 
         .copy-msg {
-            color: var(--control-color);
-            font-weight: bold;
+            color: #10b981;
+            font-weight: 600;
             opacity: 0;
             transition: opacity 0.3s;
-            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         /* Hidden simple table for clean copying */
@@ -377,20 +494,31 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(2px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
         }
 
         .modal-content {
-            background: var(--surface-color);
             padding: 32px;
-            border-radius: 12px;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 420px;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
         }
 
         .modal-header {
@@ -402,20 +530,12 @@
 
         .modal-header h2 {
             margin: 0;
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            padding: 0;
-            line-height: 1;
-        }
-        .close-btn:hover { color: var(--text-color); }
 
         .form-group {
             margin-bottom: 20px;
@@ -427,57 +547,128 @@
             margin-bottom: 8px;
             font-weight: 500;
             color: var(--text-color);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .form-group input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--input-text);
+            border-radius: 8px;
             box-sizing: border-box;
+            transition: border-color 0.3s;
         }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border-radius: 12px;
+            border: 1px solid var(--input-border);
+        }
+
+        .theme-toggle-label {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Custom Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.2);
+            transition: .4s;
+            border-radius: 34px;
+            border: 1px solid var(--surface-border);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
     </style>
 </head>
 <body>
 
     <!-- Navigation Bar -->
-    <nav class="navbar">
+    <nav class="navbar glass-panel">
         <a href="/" class="navbar-brand">
             <img src="/static/logo.png" alt="HANK Logo" class="navbar-logo">
-            <span>HANK Admin</span>
+            <span>HANK Workspace</span>
         </a>
         <div class="nav-actions">
-            <span class="header-topic" id="headerTopicDisplay">Loading topic...</span>
-            <button class="settings-btn" id="openSettings" title="Settings">⚙️</button>
+            <span class="header-topic" id="headerTopicDisplay">
+                <i data-lucide="user"></i> Loading role...
+            </span>
+            <button class="icon-btn" id="openSettings" title="Settings">
+                <i data-lucide="settings"></i>
+            </button>
         </div>
     </nav>
 
     <!-- Main Layout -->
     <div class="layout-container" id="mainLayout">
 
-        <!-- Sidebar Controls -->
+        <!-- Sidebar Controls (Now on right side due to row-reverse) -->
         <aside class="sidebar">
-            <div class="card" id="inputSection">
-                <h2>Add Action Step</h2>
+            <div class="card glass-panel" id="inputSection">
+                <h2><i data-lucide="plus-circle"></i> Add Action Step</h2>
                 <div class="input-group">
-                    <input type="text" id="actionInput" placeholder="e.g., Deploying new code to production" required>
-                    <button class="btn-primary" onclick="submitAction()">Analyze Action</button>
+                    <input type="text" id="actionInput" placeholder="e.g., Deploying new code..." required autocomplete="off">
+                    <button class="btn-primary" onclick="submitAction()">
+                        Analyze Action <i data-lucide="zap" size="18"></i>
+                    </button>
                 </div>
             </div>
 
-            <div class="card" id="suggestionsCard">
-                <h2>AI Suggestions</h2>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0;">Get common actions based on your role.</p>
-                <button id="suggestBtn" class="btn-secondary" onclick="fetchSuggestions()">Generate Suggestions</button>
+            <div class="card glass-panel" id="suggestionsCard">
+                <h2><i data-lucide="sparkles"></i> AI Suggestions</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0; line-height: 1.4;">Get tailored action steps based on your designated role.</p>
+                <button id="suggestBtn" class="btn-secondary" onclick="fetchSuggestions()">
+                    Generate Ideas <i data-lucide="lightbulb" size="18"></i>
+                </button>
                 <div class="suggestions-area" id="suggestionsArea"></div>
             </div>
 
-            <button class="btn-success" id="finalizeBtn" onclick="finalizeAssessment()">Generate Report</button>
+            <button class="btn-success" id="finalizeBtn" onclick="finalizeAssessment()">
+                Generate Report <i data-lucide="file-text" size="20"></i>
+            </button>
         </aside>
 
-        <!-- Results Area -->
+        <!-- Results Area (Left Side) -->
         <main class="results-area">
             <ul id="actionsContainer" style="padding:0; margin:0;">
                 <!-- Actions will be prepended here -->
@@ -486,13 +677,17 @@
     </div>
 
     <!-- Final Table View -->
-    <div class="final-table-container" id="finalTableContainer">
+    <div class="final-table-container glass-panel" id="finalTableContainer">
         <div class="table-header">
-            <h2>Final Hazard Report</h2>
+            <h2><i data-lucide="clipboard-list" size="28"></i> Final Hazard Report</h2>
             <div class="table-actions">
-                <span id="copyMessage" class="copy-msg">Copied!</span>
-                <button class="btn-primary" onclick="copyTable()">Copy to Word</button>
-                <button class="btn-secondary" onclick="resetView()">Back to Edit</button>
+                <span id="copyMessage" class="copy-msg"><i data-lucide="check-circle" size="18"></i> Copied!</span>
+                <button class="btn-primary" onclick="copyTable()">
+                    Copy to Word <i data-lucide="copy" size="18"></i>
+                </button>
+                <button class="btn-secondary" onclick="resetView()">
+                    <i data-lucide="arrow-left" size="18"></i> Back to Edit
+                </button>
             </div>
         </div>
         <div id="tableWrapper"></div>
@@ -503,26 +698,67 @@
 
     <!-- Settings Modal -->
     <div class="modal-overlay" id="settingsModal">
-        <div class="modal-content">
+        <div class="modal-content glass-panel">
             <div class="modal-header">
-                <h2>Assessment Configuration</h2>
-                <button class="close-btn" id="closeSettings">&times;</button>
+                <h2><i data-lucide="sliders" size="24"></i> Configuration</h2>
+                <button class="icon-btn" id="closeSettings" style="padding:6px; border:none;">
+                    <i data-lucide="x" size="20"></i>
+                </button>
             </div>
+
+            <div class="theme-toggle-container">
+                <div class="theme-toggle-label">
+                    <i data-lucide="moon" size="20"></i> Dark Mode
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
             <div class="form-group">
-                <label for="numHazards">Number of issues (hazards) to generate per action:</label>
+                <label for="numHazards">Hazards (issues) per action:</label>
                 <input type="number" id="numHazards" min="1" max="20" value="5">
             </div>
             <div class="form-group">
-                <label for="numControls">Number of mitigations (controls) to generate per hazard:</label>
+                <label for="numControls">Mitigations (controls) per hazard:</label>
                 <input type="number" id="numControls" min="1" max="20" value="3">
             </div>
-            <button class="btn-primary" id="saveSettings">Save Configuration</button>
+            <button class="btn-primary" id="saveSettings">
+                <i data-lucide="save" size="20"></i> Save Settings
+            </button>
         </div>
     </div>
 
     <script>
-        let currentTopic = localStorage.getItem('hank_topic') || "Unknown Topic";
-        document.getElementById('headerTopicDisplay').textContent = `Role: ${currentTopic}`;
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Theme Management
+        const themeToggle = document.getElementById('themeToggle');
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('hank_theme', theme);
+            themeToggle.checked = theme === 'dark';
+        }
+
+        const savedTheme = localStorage.getItem('hank_theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        }
+
+        themeToggle.addEventListener('change', (e) => {
+            setTheme(e.target.checked ? 'dark' : 'light');
+        });
+
+        // Setup Header
+        let currentTopic = localStorage.getItem('hank_topic') || "Unknown Role";
+        const headerDisplay = document.getElementById('headerTopicDisplay');
+        headerDisplay.innerHTML = `<i data-lucide="user" size="18"></i> Role: ${currentTopic}`;
+        lucide.createIcons(); // refresh icons after innerHTML change
 
         // Ensure default settings exist
         if(!localStorage.getItem('hank_num_hazards')) localStorage.setItem('hank_num_hazards', 5);
@@ -539,26 +775,29 @@
         numHazardsInput.value = localStorage.getItem('hank_num_hazards');
         numControlsInput.value = localStorage.getItem('hank_num_controls');
 
-        openSettingsBtn.addEventListener('click', () => { settingsModal.style.display = 'flex'; });
-        closeSettingsBtn.addEventListener('click', () => { settingsModal.style.display = 'none'; });
+        openSettingsBtn.addEventListener('click', () => { settingsModal.classList.add('active'); });
+
+        function closeModal() { settingsModal.classList.remove('active'); }
+        closeSettingsBtn.addEventListener('click', closeModal);
 
         saveSettingsBtn.addEventListener('click', () => {
             localStorage.setItem('hank_num_hazards', numHazardsInput.value);
             localStorage.setItem('hank_num_controls', numControlsInput.value);
-            settingsModal.style.display = 'none';
+            closeModal();
         });
 
         window.addEventListener('click', (e) => {
-            if (e.target === settingsModal) settingsModal.style.display = 'none';
+            if (e.target === settingsModal) closeModal();
         });
 
 
-        // 1. Fetch Suggestions
+        // 1. Fetch Suggestions (with staggered animation)
         async function fetchSuggestions() {
             const btn = document.getElementById('suggestBtn');
             const area = document.getElementById('suggestionsArea');
             btn.disabled = true;
-            btn.textContent = "Loading...";
+            btn.innerHTML = `<i data-lucide="loader" class="lucide-spin" size="18"></i> Generating...`;
+            lucide.createIcons();
             area.innerHTML = '';
 
             try {
@@ -568,10 +807,13 @@
                 const data = await response.json();
 
                 if (data.actions_list && data.actions_list.length > 0) {
-                    data.actions_list.forEach(action => {
+                    data.actions_list.forEach((action, index) => {
                         const chip = document.createElement('div');
                         chip.className = 'suggestion-chip';
-                        chip.textContent = action;
+                        // Staggered animation delay
+                        chip.style.animationDelay = `${index * 0.1}s`;
+                        chip.innerHTML = `<i data-lucide="plus" size="14"></i> ${action}`;
+
                         chip.onclick = () => {
                             document.getElementById('actionInput').value = action;
                             submitAction();
@@ -579,15 +821,19 @@
                         };
                         area.appendChild(chip);
                     });
+                    lucide.createIcons(); // render icons in chips
                 } else {
-                    area.innerHTML = '<span class="loading">No suggestions found.</span>';
+                    area.innerHTML = '<span class="loading"><i data-lucide="alert-circle" size="16"></i> No suggestions found.</span>';
+                    lucide.createIcons();
                 }
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
-                area.innerHTML = '<span class="loading" style="color:#dc3545;">Error loading suggestions.</span>';
+                area.innerHTML = '<span class="loading" style="color:var(--hazard-color);"><i data-lucide="alert-triangle" size="16"></i> Error loading suggestions.</span>';
+                lucide.createIcons();
             } finally {
                 btn.disabled = false;
-                btn.textContent = "Generate Suggestions";
+                btn.innerHTML = `Generate Ideas <i data-lucide="lightbulb" size="18"></i>`;
+                lucide.createIcons();
             }
         }
 
@@ -601,13 +847,14 @@
 
             const container = document.getElementById('actionsContainer');
             const actionLi = document.createElement('li');
-            actionLi.className = 'action-item';
+            actionLi.className = 'action-item glass-panel';
             actionLi.innerHTML = `
-                <div class="action-title">${actionText}</div>
-                <div class="loading" id="loading-${Date.now()}">Identifying hazards...</div>
+                <div class="action-title"><i data-lucide="activity"></i> ${actionText}</div>
+                <div class="loading" id="loading-${Date.now()}"><i data-lucide="loader" class="lucide-spin" size="18"></i> Identifying hazards...</div>
                 <ul class="hazards-list" id="hazards-${Date.now()}"></ul>
             `;
             container.prepend(actionLi);
+            lucide.createIcons();
 
             const loadingEl = actionLi.querySelector('.loading');
             const hazardsUl = actionLi.querySelector('.hazards-list');
@@ -626,32 +873,37 @@
                 loadingEl.remove();
 
                 if (!hazards || hazards.length === 0) {
-                    hazardsUl.innerHTML = '<li class="loading">No hazards identified.</li>';
+                    hazardsUl.innerHTML = '<li class="loading"><i data-lucide="info" size="16"></i> No hazards identified.</li>';
+                    lucide.createIcons();
                     return;
                 }
 
-                for (const hazard of hazards) {
+                // Launch control fetches asynchronously/concurrently
+                hazards.forEach(hazard => {
                     const hazardId = `hazard-${Math.random().toString(36).substr(2, 9)}`;
                     const hazardLi = document.createElement('li');
                     hazardLi.className = 'hazard-item';
                     hazardLi.innerHTML = `
-                        <div class="hazard-title">${hazard}</div>
-                        <div class="loading" id="loading-${hazardId}">Finding controls...</div>
+                        <div class="hazard-title"><i data-lucide="alert-triangle" size="20"></i> ${hazard}</div>
+                        <div class="loading" id="loading-${hazardId}"><i data-lucide="loader" class="lucide-spin" size="16"></i> Finding controls...</div>
                         <ul class="controls-list" id="controls-${hazardId}"></ul>
                     `;
                     hazardsUl.appendChild(hazardLi);
+                    lucide.createIcons();
 
+                    // Don't await in loop, call asynchronously
                     fetchControls(actionText, hazard, hazardId, numControls);
-                }
+                });
 
             } catch (error) {
                 console.error("Error processing action:", error);
-                loadingEl.textContent = "Error processing action.";
-                loadingEl.style.color = "#dc3545";
+                loadingEl.innerHTML = `<i data-lucide="alert-octagon" size="18"></i> Error processing action.`;
+                loadingEl.style.color = "var(--hazard-color)";
+                lucide.createIcons();
             }
         }
 
-        // 3. Fetch Controls
+        // 3. Fetch Controls (Asynchronous)
         async function fetchControls(actionText, hazard, hazardId, numControls) {
             const loadingEl = document.getElementById(`loading-${hazardId}`);
             const controlsUl = document.getElementById(`controls-${hazardId}`);
@@ -663,25 +915,28 @@
                 const controlData = await controlResponse.json();
                 const controls = controlData.controls_list;
 
-                loadingEl.remove();
+                if(loadingEl) loadingEl.remove();
 
                 if (!controls || controls.length === 0) {
-                    controlsUl.innerHTML = '<li class="loading">No controls identified.</li>';
+                    controlsUl.innerHTML = '<li class="loading"><i data-lucide="info" size="16"></i> No controls identified.</li>';
+                    lucide.createIcons();
                     return;
                 }
 
                 controls.forEach(control => {
                     const controlLi = document.createElement('li');
                     controlLi.className = 'control-item';
-                    controlLi.textContent = control;
+                    controlLi.innerHTML = `<i data-lucide="shield-check" size="18"></i> <span>${control}</span>`;
                     controlsUl.appendChild(controlLi);
                 });
+                lucide.createIcons();
 
             } catch (error) {
                 console.error("Error fetching controls:", error);
                 if(loadingEl) {
-                    loadingEl.textContent = "Error finding controls.";
-                    loadingEl.style.color = "#dc3545";
+                    loadingEl.innerHTML = `<i data-lucide="alert-octagon" size="16"></i> Error finding controls.`;
+                    loadingEl.style.color = "var(--hazard-color)";
+                    lucide.createIcons();
                 }
             }
         }
@@ -699,9 +954,9 @@
                 <table id="assessmentTable">
                     <thead>
                         <tr>
-                            <th>Action</th>
-                            <th>Hazard</th>
-                            <th>Controls</th>
+                            <th>Action Step</th>
+                            <th>Identified Hazard</th>
+                            <th>Recommended Controls</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -721,7 +976,9 @@
             `;
 
             actionsList.forEach(actionItem => {
-                const actionTitle = actionItem.querySelector('.action-title').textContent;
+                const actionTitleEl = actionItem.querySelector('.action-title');
+                // Remove icon text from title
+                const actionTitle = actionTitleEl.textContent.trim();
                 const hazards = actionItem.querySelectorAll('.hazard-item');
 
                 if (hazards.length === 0) {
@@ -731,8 +988,9 @@
                 }
 
                 hazards.forEach((hazardItem, hIndex) => {
-                    const hazardTitle = hazardItem.querySelector('.hazard-title').textContent;
-                    const controls = hazardItem.querySelectorAll('.control-item');
+                    const hazardTitleEl = hazardItem.querySelector('.hazard-title');
+                    const hazardTitle = hazardTitleEl.textContent.trim();
+                    const controls = hazardItem.querySelectorAll('.control-item span');
 
                     let displayControlsHTML = '<ul style="margin:0; padding-left:20px;">';
                     let copyControlsHTML = '<ul style="margin:0; padding-left:20px;">';
