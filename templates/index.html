@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HANK - Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to HANK</h1>
+        <p>The Hazard Assessment and Navigation Kit</p>
+        <form id="topicForm">
+            <input type="text" id="topicInput" placeholder="Enter a topic or job description" required>
+            <button type="submit">Start Assessment</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('topicForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const topic = document.getElementById('topicInput').value;
+            if (topic) {
+                // Save the topic to the backend just in case (optional, based on existing routes)
+                try {
+                    await fetch(`/api/set-user-topic?topic=${encodeURIComponent(topic)}`, {
+                        method: 'POST'
+                    });
+                } catch (error) {
+                    console.error("Error saving topic to backend:", error);
+                }
+
+                // Save to localStorage
+                localStorage.setItem('hank_topic', topic);
+
+                // Redirect to actions screen
+                window.location.href = '/actions';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HANK - Actions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .topic-display {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-primary { background-color: #3498db; }
+        .btn-primary:hover { background-color: #2980b9; }
+        .btn-secondary { background-color: #2ecc71; }
+        .btn-secondary:hover { background-color: #27ae60; }
+
+        .suggestions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .suggestion-chip {
+            background-color: #e8f4f8;
+            border: 1px solid #3498db;
+            color: #2980b9;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .suggestion-chip:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* List Styles */
+        .actions-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .action-item {
+            background-color: #fdfdfd;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .action-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2980b9;
+        }
+        .hazards-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .hazard-item {
+            background-color: #fffaf0;
+            border-left: 4px solid #e67e22;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        .hazard-title {
+            font-weight: bold;
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+        .controls-list {
+            padding-left: 20px;
+            color: #27ae60;
+        }
+        .control-item {
+            margin-bottom: 5px;
+        }
+
+        .loading {
+            font-style: italic;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hazard Assessment</h1>
+        <div class="topic-display" id="topicDisplay">Topic: Loading...</div>
+
+        <div class="input-group">
+            <input type="text" id="actionInput" placeholder="Enter an action to assess">
+            <button class="btn-primary" onclick="submitAction()">Add Action</button>
+            <button class="btn-secondary" onclick="suggestActions()" id="suggestBtn">Suggest Actions</button>
+        </div>
+
+        <div id="suggestionsArea" class="suggestions-container"></div>
+
+        <ul id="actionsContainer" class="actions-list">
+            <!-- Dynamic content will go here -->
+        </ul>
+    </div>
+
+    <script>
+        let currentTopic = "";
+
+        // On load, get topic
+        document.addEventListener('DOMContentLoaded', () => {
+            currentTopic = localStorage.getItem('hank_topic');
+            if (!currentTopic) {
+                window.location.href = '/'; // Go back if no topic
+                return;
+            }
+            document.getElementById('topicDisplay').textContent = `Topic: ${currentTopic}`;
+        });
+
+        // 1. Suggest Actions
+        async function suggestActions() {
+            const btn = document.getElementById('suggestBtn');
+            const area = document.getElementById('suggestionsArea');
+
+            btn.disabled = true;
+            btn.textContent = "Loading...";
+            area.innerHTML = '<span class="loading">Generating suggestions...</span>';
+
+            try {
+                const response = await fetch(`/api/suggest-actions?topic=${encodeURIComponent(currentTopic)}`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                area.innerHTML = '';
+                if (data.actions_list && data.actions_list.length > 0) {
+                    data.actions_list.forEach(action => {
+                        const chip = document.createElement('div');
+                        chip.className = 'suggestion-chip';
+                        chip.textContent = action;
+                        chip.onclick = () => {
+                            document.getElementById('actionInput').value = action;
+                            submitAction();
+                            chip.remove(); // Remove chip once used
+                        };
+                        area.appendChild(chip);
+                    });
+                } else {
+                    area.innerHTML = '<span class="loading">No suggestions found.</span>';
+                }
+            } catch (error) {
+                console.error("Error fetching suggestions:", error);
+                area.innerHTML = '<span class="loading" style="color:red;">Error loading suggestions.</span>';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Suggest Actions";
+            }
+        }
+
+        // 2. Submit Action
+        async function submitAction() {
+            const input = document.getElementById('actionInput');
+            const actionText = input.value.trim();
+
+            if (!actionText) return;
+
+            input.value = ''; // clear input
+
+            // Add action UI
+            const container = document.getElementById('actionsContainer');
+            const actionLi = document.createElement('li');
+            actionLi.className = 'action-item';
+            actionLi.innerHTML = `
+                <div class="action-title">${actionText}</div>
+                <div class="loading" id="loading-${Date.now()}">Identifying hazards...</div>
+                <ul class="hazards-list" id="hazards-${Date.now()}"></ul>
+            `;
+            container.prepend(actionLi); // Add to top
+
+            const loadingEl = actionLi.querySelector('.loading');
+            const hazardsUl = actionLi.querySelector('.hazards-list');
+
+            try {
+                // Save action to backend (optional, following the prompt's instructions)
+                await fetch(`/api/add-action-step?action=${encodeURIComponent(actionText)}`, { method: 'POST' });
+
+                // Get Hazards
+                const hazardResponse = await fetch(`/api/add-hazard?topic=${encodeURIComponent(currentTopic)}&action=${encodeURIComponent(actionText)}`, {
+                    method: 'POST'
+                });
+                const hazardData = await hazardResponse.json();
+                const hazards = hazardData.hazard_list;
+
+                loadingEl.remove();
+
+                if (!hazards || hazards.length === 0) {
+                    hazardsUl.innerHTML = '<li class="loading">No hazards identified.</li>';
+                    return;
+                }
+
+                // Process each hazard
+                for (const hazard of hazards) {
+                    const hazardId = `hazard-${Math.random().toString(36).substr(2, 9)}`;
+                    const hazardLi = document.createElement('li');
+                    hazardLi.className = 'hazard-item';
+                    hazardLi.innerHTML = `
+                        <div class="hazard-title">${hazard}</div>
+                        <div class="loading" id="loading-${hazardId}">Finding controls...</div>
+                        <ul class="controls-list" id="controls-${hazardId}"></ul>
+                    `;
+                    hazardsUl.appendChild(hazardLi);
+
+                    // Get Controls for this hazard
+                    fetchControls(actionText, hazard, hazardId);
+                }
+
+            } catch (error) {
+                console.error("Error processing action:", error);
+                loadingEl.textContent = "Error processing action.";
+                loadingEl.style.color = "red";
+            }
+        }
+
+        // 3. Fetch Controls for a specific hazard
+        async function fetchControls(actionText, hazard, hazardId) {
+            const loadingEl = document.getElementById(`loading-${hazardId}`);
+            const controlsUl = document.getElementById(`controls-${hazardId}`);
+
+            try {
+                const controlResponse = await fetch(`/api/add-control?topic=${encodeURIComponent(currentTopic)}&action=${encodeURIComponent(actionText)}&hazard=${encodeURIComponent(hazard)}`, {
+                    method: 'POST'
+                });
+                const controlData = await controlResponse.json();
+                const controls = controlData.controls_list;
+
+                loadingEl.remove();
+
+                if (!controls || controls.length === 0) {
+                    controlsUl.innerHTML = '<li class="loading">No controls identified.</li>';
+                    return;
+                }
+
+                controls.forEach(control => {
+                    const controlLi = document.createElement('li');
+                    controlLi.className = 'control-item';
+                    controlLi.textContent = control;
+                    controlsUl.appendChild(controlLi);
+                });
+
+            } catch (error) {
+                console.error("Error fetching controls:", error);
+                loadingEl.textContent = "Error finding controls.";
+                loadingEl.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>

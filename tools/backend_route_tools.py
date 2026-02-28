@@ -7,6 +7,9 @@ class HazardResponse(BaseModel):
 
 class ControlResponse(BaseModel):
     controls: list[str]
+
+class ActionResponse(BaseModel):
+    actions: list[str]
     
 
 def add_hazards(topic: str, action: str):
