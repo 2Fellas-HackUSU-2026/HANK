@@ -1,6 +1,6 @@
 
 
-def add_hazard(topic: str, action: str):
+def add_hazards(topic: str, action: str):
     """
     Prompts the agent to come up with hazards associated with the action param. Use topic param as context to decide with what lens to view the problem at hand. 
 
@@ -19,16 +19,18 @@ def add_hazard(topic: str, action: str):
     hazards = []
     return hazards
 
-def add_control(topic: str, action: str, hazard):
+def add_controls(topic: str, action: str, hazard):
     """
     Prompts the agent to come up with controls associated with the hazrad. it should use the `topic` as context to decide with what lens to view the problem at hand, and it should use the `action` to make sure the controls are reasonable.  
 
     :param topic: User's topic/job description.
     :type topic: str
-    :param action: The action for which hazards are to be found.
+    :param action: The action, provides increased context when finding controls.
     :type action: str
+    :param hazard: The hazard for which controls should be created.
+    :type hazard: str
 
-    :return hazards: returns a list of hazards associated with the `action`
+    :return controls: returns a list of controls associated with the `hazard`
     :return type: list
     """
 
@@ -42,3 +44,10 @@ def add_control(topic: str, action: str, hazard):
     controls = []
     return controls
     
+def user_topic(topic: str):
+    topic = topic
+    return topic
+
+def add_action(action_step: str):
+    action = action_step
+    return action
