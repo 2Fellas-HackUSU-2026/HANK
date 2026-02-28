@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from tools.backend_route_tools import add_hazards, add_controls, get_user_topic, add_action
+from tools.backend_route_tools import add_hazards, add_controls, get_user_topic, add_action, suggest_actions
 
 router = APIRouter()
 
@@ -23,3 +23,8 @@ def user_topic(topic: str):
 def new_step(action: str):
     action = add_action(action)
     return {"action": action}
+
+@router.post("/api/suggest-actions")
+def get_suggested_actions(topic: str):
+    actions_list = suggest_actions(topic=topic)
+    return {"actions_list": actions_list}

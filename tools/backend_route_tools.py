@@ -7,6 +7,9 @@ class HazardResponse(BaseModel):
 
 class ControlReponse(BaseModel):
     controls: list[str]
+
+class ActionResponse(BaseModel):
+    actions: list[str]
     
 
 def add_hazards(topic: str, action: str):
@@ -57,6 +60,24 @@ def add_controls(topic: str, action: str, hazard):
 def get_user_topic(topic: str):
     topic = topic
     return topic
+
+def suggest_actions(topic: str):
+    """
+    Prompts the agent to come up with suggested actions associated with the topic param.
+
+    :param topic: User's topic/job description.
+    :type topic: str
+
+    :return actions: returns a list of actions associated with the `topic`
+    :return type: list
+    """
+
+    prompt = f"As an expert with {topic}, your job is to come up with a well thought out list of common actions or tasks that might be performed in this role. Your actions should be concise."
+    query = f"What is a list of 3 to 6 common actions when working as/with {topic}?"
+
+    actions = agent(system_prompt= prompt, query= query, return_format= ActionResponse)
+
+    return actions.actions
 
 def add_action(action_step: str):
     action = action_step
