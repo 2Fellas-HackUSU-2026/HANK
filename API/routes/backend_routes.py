@@ -9,3 +9,4 @@ def add_hazard(topic: str, action: str):
 @router.post("/api/add-control")
 def add_control(topic: str, action: str, hazard: str):
     pass
+
