@@ -1,2 +1,2 @@
 # HANK
-Hazard Assessment and Navigation Kit
+The Hazard Assessment and Navigation Kit.
