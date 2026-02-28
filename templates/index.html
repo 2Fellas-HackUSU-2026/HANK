@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HANK - Setup</title>
     <style>
+        img{
+            width: 100%;
+            border-radius: 25px;
+            margin-bottom: 2em;
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -21,7 +26,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 400px;
+            max-width: 800px;
             width: 100%;
         }
         h1 {
@@ -58,8 +63,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to HANK</h1>
-        <p>The Hazard Assessment and Navigation Kit</p>
+        <!-- <h1>Welcome to HANK</h1> -->
+        <img src="/static/images/HANK.png" alt="Hank">
+        <!-- <p>The Hazard Assessment and Navigation Kit</p> -->
         <form id="topicForm">
             <input type="text" id="topicInput" placeholder="Enter a topic or job description" required>
             <button type="submit">Start Assessment</button>
