@@ -5,88 +5,297 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HANK - Setup</title>
     <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --text-color: #333333;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .navbar-logo {
+            height: 32px;
+            width: auto;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-btn:hover {
+            color: var(--text-color);
+            background-color: var(--border-color);
+        }
+
+        /* Main Content Container */
+        .main-content {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            padding: 24px;
         }
-        .container {
-            background-color: #1e1e1e;
+
+        .card {
+            background-color: var(--surface-color);
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow-md);
             text-align: center;
-            max-width: 400px;
+            max-width: 480px;
             width: 100%;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
         }
-        .logo {
-            max-width: 150px;
-            margin-bottom: 20px;
-        }
+
         h1 {
-            color: #ffffff;
+            color: var(--text-color);
             margin-top: 0;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 1.75rem;
+            font-weight: 700;
         }
+
         p {
-            color: #b0b0b0;
-            margin-bottom: 30px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-size: 1rem;
         }
-        input[type="text"] {
+
+        input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #444;
-            background-color: #2c2c2c;
-            color: #fff;
-            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            color: #495057;
+            border-radius: 8px;
             box-sizing: border-box;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            font-size: 1rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
-        input[type="text"]:focus {
+
+        input[type="text"]:focus, input[type="number"]:focus {
             outline: none;
-            border-color: #3498db;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
-        button {
-            background-color: #3498db;
+
+        button.btn-primary {
+            background-color: var(--primary-color);
             color: white;
-            padding: 12px 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 600;
             width: 100%;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s;
         }
-        button:hover {
-            background-color: #2980b9;
+
+        button.btn-primary:hover {
+            background-color: var(--primary-hover);
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background: var(--surface-color);
+            padding: 32px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0;
+            line-height: 1;
+        }
+        .close-btn:hover { color: var(--text-color); }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            margin-bottom: 0;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="/static/logo.png" alt="HANK Logo" class="logo">
-        <h1>Welcome to HANK</h1>
-        <p>The Hazard Assessment and Navigation Kit</p>
-        <form id="topicForm">
-            <input type="text" id="topicInput" placeholder="Enter a topic or job description" required>
-            <button type="submit">Start Assessment</button>
-        </form>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="/static/logo.png" alt="HANK Logo" class="navbar-logo">
+            <span>HANK Admin</span>
+        </div>
+        <button class="settings-btn" id="openSettings" title="Settings">⚙️</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="card">
+            <h1>Create New Assessment</h1>
+            <p>Enter the role or scope to begin generating a hazard profile.</p>
+            <form id="topicForm">
+                <input type="text" id="topicInput" placeholder="e.g. Software Engineer, Welder, Pilot" required>
+                <button type="submit" class="btn-primary">Start Assessment</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Assessment Configuration</h2>
+                <button class="close-btn" id="closeSettings">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="numHazards">Number of issues (hazards) to generate per action:</label>
+                <input type="number" id="numHazards" min="1" max="20" value="5">
+            </div>
+            <div class="form-group">
+                <label for="numControls">Number of mitigations (controls) to generate per hazard:</label>
+                <input type="number" id="numControls" min="1" max="20" value="3">
+            </div>
+            <button class="btn-primary" id="saveSettings">Save Configuration</button>
+        </div>
     </div>
 
     <script>
+        // Settings Logic
+        const settingsModal = document.getElementById('settingsModal');
+        const openSettingsBtn = document.getElementById('openSettings');
+        const closeSettingsBtn = document.getElementById('closeSettings');
+        const saveSettingsBtn = document.getElementById('saveSettings');
+        const numHazardsInput = document.getElementById('numHazards');
+        const numControlsInput = document.getElementById('numControls');
+
+        // Load existing settings
+        const currentHazards = localStorage.getItem('hank_num_hazards') || 5;
+        const currentControls = localStorage.getItem('hank_num_controls') || 3;
+        numHazardsInput.value = currentHazards;
+        numControlsInput.value = currentControls;
+
+        openSettingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'flex';
+        });
+
+        closeSettingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'none';
+        });
+
+        saveSettingsBtn.addEventListener('click', () => {
+            localStorage.setItem('hank_num_hazards', numHazardsInput.value);
+            localStorage.setItem('hank_num_controls', numControlsInput.value);
+            settingsModal.style.display = 'none';
+        });
+
+        // Close modal on click outside
+        window.addEventListener('click', (e) => {
+            if (e.target === settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+
+        // Form Submission
         document.getElementById('topicForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const topic = document.getElementById('topicInput').value;
+
+            // Ensure settings are saved if not modified
+            if(!localStorage.getItem('hank_num_hazards')) localStorage.setItem('hank_num_hazards', 5);
+            if(!localStorage.getItem('hank_num_controls')) localStorage.setItem('hank_num_controls', 3);
+
             if (topic) {
                 try {
                     await fetch(`/api/set-user-topic?topic=${encodeURIComponent(topic)}`, {

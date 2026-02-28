@@ -5,272 +5,561 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HANK - Actions</title>
     <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --text-color: #333333;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+
+            --hazard-color: #dc3545; /* Bootstrap danger red */
+            --control-color: #28a745; /* Bootstrap success green */
+            --action-color: #495057;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
-            padding: 40px 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #1e1e1e;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-        }
-        .header {
+
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            height: 60px;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-        }
-        .logo {
-            max-width: 100px;
-            margin-right: 20px;
-        }
-        h1 {
-            color: #ffffff;
-            margin: 0;
-            font-size: 28px;
-        }
-        .topic-display {
-            font-style: italic;
-            color: #b0b0b0;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #444;
-            display: flex;
             justify-content: space-between;
-            align-items: center;
+            padding: 0 24px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .navbar-logo {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-btn:hover {
+            color: var(--text-color);
+            background-color: var(--border-color);
+        }
+
+        .header-topic {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Main Layout */
+        .layout-container {
+            display: flex;
+            flex: 1;
+            padding: 24px;
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Sidebar for inputs */
+        .sidebar {
+            width: 350px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            color: var(--text-color);
+        }
+
+        /* Forms and Inputs */
         .input-group {
             display: flex;
+            flex-direction: column;
             gap: 12px;
-            margin-bottom: 20px;
         }
+
         input[type="text"] {
-            flex-grow: 1;
-            padding: 12px;
-            border: 1px solid #444;
-            background-color: #2c2c2c;
-            color: #fff;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            color: #495057;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
+
         input[type="text"]:focus {
             outline: none;
-            border-color: #3498db;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            transition: all 0.2s ease-in-out;
-        }
-        .btn-primary { background-color: #3498db; }
-        .btn-primary:hover { background-color: #2980b9; transform: translateY(-1px); }
-        .btn-secondary { background-color: #2ecc71; }
-        .btn-secondary:hover { background-color: #27ae60; transform: translateY(-1px); }
-        .btn-finalize { background-color: #9b59b6; margin-left: auto; }
-        .btn-finalize:hover { background-color: #8e44ad; }
 
-        .suggestions-container {
+        button.btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        button.btn-primary:hover { background-color: var(--primary-hover); }
+        button.btn-primary:disabled { background-color: #a0c4ff; cursor: not-allowed; }
+
+        button.btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        button.btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        button.btn-secondary:disabled { border-color: #a0c4ff; color: #a0c4ff; cursor: not-allowed; }
+
+        button.btn-success {
+            background-color: var(--control-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-top: auto;
+        }
+        button.btn-success:hover { background-color: #218838; }
+
+        /* Suggestion Chips */
+        .suggestions-area {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-top: 12px;
         }
         .suggestion-chip {
-            background-color: #2c3e50;
-            border: 1px solid #34495e;
-            color: #ecf0f1;
-            padding: 8px 16px;
-            border-radius: 20px;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
+            transition: background-color 0.2s;
+            border: 1px solid #ced4da;
         }
         .suggestion-chip:hover {
-            background-color: #34495e;
-            border-color: #3498db;
+            background-color: #dee2e6;
         }
 
-        /* List Styles */
-        .actions-list {
-            list-style-type: none;
+        /* Main Content Area (Results) */
+        .results-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        .action-item {
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            list-style: none;
+        }
+
+        .action-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--action-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .hazards-list {
+            list-style: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
-        .action-item {
-            background-color: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            padding: 24px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        .action-title {
-            font-size: 22px;
-            font-weight: bold;
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #3498db;
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
-        }
-        .hazards-list {
-            list-style-type: none;
-            padding-left: 0;
-            margin: 0;
-        }
+
         .hazard-item {
-            background-color: #332d2d;
-            border-left: 4px solid #e67e22;
-            padding: 18px;
-            margin-bottom: 16px;
-            border-radius: 0 6px 6px 0;
+            background-color: #fff5f5;
+            border-left: 4px solid var(--hazard-color);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
         }
+
         .hazard-title {
-            font-weight: bold;
-            color: #e67e22;
+            font-weight: 600;
+            color: var(--hazard-color);
             margin-bottom: 12px;
-            font-size: 18px;
+            font-size: 1.1rem;
         }
+
         .controls-list {
-            padding-left: 24px;
-            color: #2ecc71;
+            list-style: none;
+            padding: 0;
             margin: 0;
-            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
+
         .control-item {
-            margin-bottom: 8px;
+            background-color: #f0fff4;
+            border-left: 4px solid var(--control-color);
+            padding: 12px;
+            border-radius: 0 6px 6px 0;
+            color: #2f855a;
+            font-size: 0.95rem;
         }
 
         .loading {
+            color: var(--text-muted);
             font-style: italic;
-            color: #7f8c8d;
-            font-size: 14px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Table Styles for Finalize */
-        #finalTableContainer {
+        /* Final Table View */
+        .final-table-container {
             display: none;
-            margin-top: 30px;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        table {
             width: 100%;
-            border-collapse: collapse;
-            background-color: #2a2a2a;
-            color: #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #444;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            background: var(--surface-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
         }
-        th, td {
-            padding: 16px;
-            text-align: left;
-            border-bottom: 1px solid #444;
-            border-right: 1px solid #444;
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
         }
-        th {
-            background-color: #333;
-            font-weight: bold;
-            color: #fff;
-        }
-        th:last-child, td:last-child {
-            border-right: none;
-        }
-        tr:last-child td {
-            border-bottom: none;
+
+        .table-header h2 {
+            margin: 0;
         }
 
         .table-actions {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
+            gap: 12px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* The stylized table we show to the user */
+        #assessmentTable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
         }
 
-        .copy-success {
-            color: #2ecc71;
+        #assessmentTable th, #assessmentTable td {
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            text-align: left;
+        }
+
+        #assessmentTable th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        #assessmentTable td {
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            vertical-align: top;
+        }
+
+        .copy-msg {
+            color: var(--control-color);
             font-weight: bold;
-            margin-left: 15px;
             opacity: 0;
             transition: opacity 0.3s;
+            margin-left: 10px;
         }
+
+        /* Hidden simple table for clean copying */
+        #hiddenCopyTableContainer {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background: var(--surface-color);
+            padding: 32px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0;
+            line-height: 1;
+        }
+        .close-btn:hover { color: var(--text-color); }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container" id="mainApp">
-        <div class="header">
-            <img src="/static/logo.png" alt="HANK Logo" class="logo">
-            <h1>Hazard Assessment</h1>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <img src="/static/logo.png" alt="HANK Logo" class="navbar-logo">
+            <span>HANK Admin</span>
+        </a>
+        <div class="nav-actions">
+            <span class="header-topic" id="headerTopicDisplay">Loading topic...</span>
+            <button class="settings-btn" id="openSettings" title="Settings">⚙️</button>
         </div>
+    </nav>
 
-        <div class="topic-display">
-            <span id="topicDisplay">Topic: Loading...</span>
-            <button class="btn-finalize" onclick="finalizeAssessment()" id="finalizeBtn">Finalize Assessment</button>
-        </div>
+    <!-- Main Layout -->
+    <div class="layout-container" id="mainLayout">
 
-        <div class="input-group" id="inputSection">
-            <input type="text" id="actionInput" placeholder="Enter an action to assess">
-            <button class="btn-primary" onclick="submitAction()">Add Action</button>
-            <button class="btn-secondary" onclick="suggestActions()" id="suggestBtn">Suggest Actions</button>
-        </div>
-
-        <div id="suggestionsArea" class="suggestions-container"></div>
-
-        <ul id="actionsContainer" class="actions-list">
-            <!-- Dynamic content will go here -->
-        </ul>
-
-        <!-- Final Table Container -->
-        <div id="finalTableContainer">
-            <div class="table-actions">
-                <h2 style="margin: 0;">Final Report</h2>
-                <div>
-                    <span id="copyMessage" class="copy-success">Copied to clipboard!</span>
-                    <button class="btn-primary" onclick="copyTable()">Copy Table</button>
-                    <button class="btn-secondary" onclick="resetView()" style="background-color: #7f8c8d;">Back to Edit</button>
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="card" id="inputSection">
+                <h2>Add Action Step</h2>
+                <div class="input-group">
+                    <input type="text" id="actionInput" placeholder="e.g., Deploying new code to production" required>
+                    <button class="btn-primary" onclick="submitAction()">Analyze Action</button>
                 </div>
             </div>
-            <div id="tableWrapper"></div>
+
+            <div class="card" id="suggestionsCard">
+                <h2>AI Suggestions</h2>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0;">Get common actions based on your role.</p>
+                <button id="suggestBtn" class="btn-secondary" onclick="fetchSuggestions()">Generate Suggestions</button>
+                <div class="suggestions-area" id="suggestionsArea"></div>
+            </div>
+
+            <button class="btn-success" id="finalizeBtn" onclick="finalizeAssessment()">Generate Report</button>
+        </aside>
+
+        <!-- Results Area -->
+        <main class="results-area">
+            <ul id="actionsContainer" style="padding:0; margin:0;">
+                <!-- Actions will be prepended here -->
+            </ul>
+        </main>
+    </div>
+
+    <!-- Final Table View -->
+    <div class="final-table-container" id="finalTableContainer">
+        <div class="table-header">
+            <h2>Final Hazard Report</h2>
+            <div class="table-actions">
+                <span id="copyMessage" class="copy-msg">Copied!</span>
+                <button class="btn-primary" onclick="copyTable()">Copy to Word</button>
+                <button class="btn-secondary" onclick="resetView()">Back to Edit</button>
+            </div>
+        </div>
+        <div id="tableWrapper"></div>
+    </div>
+
+    <!-- Hidden container for simple table to be copied -->
+    <div id="hiddenCopyTableContainer"></div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Assessment Configuration</h2>
+                <button class="close-btn" id="closeSettings">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="numHazards">Number of issues (hazards) to generate per action:</label>
+                <input type="number" id="numHazards" min="1" max="20" value="5">
+            </div>
+            <div class="form-group">
+                <label for="numControls">Number of mitigations (controls) to generate per hazard:</label>
+                <input type="number" id="numControls" min="1" max="20" value="3">
+            </div>
+            <button class="btn-primary" id="saveSettings">Save Configuration</button>
         </div>
     </div>
 
     <script>
-        let currentTopic = "";
+        let currentTopic = localStorage.getItem('hank_topic') || "Unknown Topic";
+        document.getElementById('headerTopicDisplay').textContent = `Role: ${currentTopic}`;
 
-        // On load, get topic
-        document.addEventListener('DOMContentLoaded', () => {
-            currentTopic = localStorage.getItem('hank_topic');
-            if (!currentTopic) {
-                window.location.href = '/'; // Go back if no topic
-                return;
-            }
-            document.getElementById('topicDisplay').textContent = `Topic: ${currentTopic}`;
+        // Ensure default settings exist
+        if(!localStorage.getItem('hank_num_hazards')) localStorage.setItem('hank_num_hazards', 5);
+        if(!localStorage.getItem('hank_num_controls')) localStorage.setItem('hank_num_controls', 3);
+
+        // Settings Logic
+        const settingsModal = document.getElementById('settingsModal');
+        const openSettingsBtn = document.getElementById('openSettings');
+        const closeSettingsBtn = document.getElementById('closeSettings');
+        const saveSettingsBtn = document.getElementById('saveSettings');
+        const numHazardsInput = document.getElementById('numHazards');
+        const numControlsInput = document.getElementById('numControls');
+
+        numHazardsInput.value = localStorage.getItem('hank_num_hazards');
+        numControlsInput.value = localStorage.getItem('hank_num_controls');
+
+        openSettingsBtn.addEventListener('click', () => { settingsModal.style.display = 'flex'; });
+        closeSettingsBtn.addEventListener('click', () => { settingsModal.style.display = 'none'; });
+
+        saveSettingsBtn.addEventListener('click', () => {
+            localStorage.setItem('hank_num_hazards', numHazardsInput.value);
+            localStorage.setItem('hank_num_controls', numControlsInput.value);
+            settingsModal.style.display = 'none';
         });
 
-        // 1. Suggest Actions
-        async function suggestActions() {
+        window.addEventListener('click', (e) => {
+            if (e.target === settingsModal) settingsModal.style.display = 'none';
+        });
+
+
+        // 1. Fetch Suggestions
+        async function fetchSuggestions() {
             const btn = document.getElementById('suggestBtn');
             const area = document.getElementById('suggestionsArea');
-
             btn.disabled = true;
             btn.textContent = "Loading...";
-            area.innerHTML = '<span class="loading">Generating suggestions...</span>';
+            area.innerHTML = '';
 
             try {
                 const response = await fetch(`/api/suggest-actions?topic=${encodeURIComponent(currentTopic)}`, {
@@ -278,7 +567,6 @@
                 });
                 const data = await response.json();
 
-                area.innerHTML = '';
                 if (data.actions_list && data.actions_list.length > 0) {
                     data.actions_list.forEach(action => {
                         const chip = document.createElement('div');
@@ -296,10 +584,10 @@
                 }
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
-                area.innerHTML = '<span class="loading" style="color:#e74c3c;">Error loading suggestions.</span>';
+                area.innerHTML = '<span class="loading" style="color:#dc3545;">Error loading suggestions.</span>';
             } finally {
                 btn.disabled = false;
-                btn.textContent = "Suggest Actions";
+                btn.textContent = "Generate Suggestions";
             }
         }
 
@@ -309,7 +597,6 @@
             const actionText = input.value.trim();
 
             if (!actionText) return;
-
             input.value = '';
 
             const container = document.getElementById('actionsContainer');
@@ -324,11 +611,13 @@
 
             const loadingEl = actionLi.querySelector('.loading');
             const hazardsUl = actionLi.querySelector('.hazards-list');
+            const numHazards = localStorage.getItem('hank_num_hazards');
+            const numControls = localStorage.getItem('hank_num_controls');
 
             try {
                 await fetch(`/api/add-action-step?action=${encodeURIComponent(actionText)}`, { method: 'POST' });
 
-                const hazardResponse = await fetch(`/api/add-hazard?topic=${encodeURIComponent(currentTopic)}&action=${encodeURIComponent(actionText)}`, {
+                const hazardResponse = await fetch(`/api/add-hazard?topic=${encodeURIComponent(currentTopic)}&action=${encodeURIComponent(actionText)}&num_hazards=${numHazards}`, {
                     method: 'POST'
                 });
                 const hazardData = await hazardResponse.json();
@@ -352,23 +641,23 @@
                     `;
                     hazardsUl.appendChild(hazardLi);
 
-                    fetchControls(actionText, hazard, hazardId);
+                    fetchControls(actionText, hazard, hazardId, numControls);
                 }
 
             } catch (error) {
                 console.error("Error processing action:", error);
                 loadingEl.textContent = "Error processing action.";
-                loadingEl.style.color = "#e74c3c";
+                loadingEl.style.color = "#dc3545";
             }
         }
 
         // 3. Fetch Controls
-        async function fetchControls(actionText, hazard, hazardId) {
+        async function fetchControls(actionText, hazard, hazardId, numControls) {
             const loadingEl = document.getElementById(`loading-${hazardId}`);
             const controlsUl = document.getElementById(`controls-${hazardId}`);
 
             try {
-                const controlResponse = await fetch(`/api/add-control?topic=${encodeURIComponent(currentTopic)}&action=${encodeURIComponent(actionText)}&hazard=${encodeURIComponent(hazard)}`, {
+                const controlResponse = await fetch(`/api/add-control?topic=${encodeURIComponent(currentTopic)}&action=${encodeURIComponent(actionText)}&hazard=${encodeURIComponent(hazard)}&num_controls=${numControls}`, {
                     method: 'POST'
                 });
                 const controlData = await controlResponse.json();
@@ -392,20 +681,21 @@
                 console.error("Error fetching controls:", error);
                 if(loadingEl) {
                     loadingEl.textContent = "Error finding controls.";
-                    loadingEl.style.color = "#e74c3c";
+                    loadingEl.style.color = "#dc3545";
                 }
             }
         }
 
-        // 4. Finalize - Build HTML Table
+        // 4. Finalize - Build HTML Tables
         function finalizeAssessment() {
             const actionsList = document.querySelectorAll('.action-item');
             if (actionsList.length === 0) {
-                alert("Please add at least one action before finalizing.");
+                alert("Please add at least one action before generating a report.");
                 return;
             }
 
-            let tableHTML = `
+            // --- 1. Build visually styled table ---
+            let displayTableHTML = `
                 <table id="assessmentTable">
                     <thead>
                         <tr>
@@ -417,12 +707,26 @@
                     <tbody>
             `;
 
+            // --- 2. Build hidden unstyled table for copying to Word ---
+            let copyTableHTML = `
+                <table id="copyTable" border="1" style="border-collapse: collapse; width: 100%; font-family: sans-serif;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 8px; text-align: left; background-color: #f2f2f2;">Action</th>
+                            <th style="padding: 8px; text-align: left; background-color: #f2f2f2;">Hazard</th>
+                            <th style="padding: 8px; text-align: left; background-color: #f2f2f2;">Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
             actionsList.forEach(actionItem => {
                 const actionTitle = actionItem.querySelector('.action-title').textContent;
                 const hazards = actionItem.querySelectorAll('.hazard-item');
 
                 if (hazards.length === 0) {
-                    tableHTML += `<tr><td>${actionTitle}</td><td colspan="2">No hazards found.</td></tr>`;
+                    displayTableHTML += `<tr><td>${actionTitle}</td><td colspan="2">No hazards found.</td></tr>`;
+                    copyTableHTML += `<tr><td style="padding: 8px;">${actionTitle}</td><td colspan="2" style="padding: 8px;">No hazards found.</td></tr>`;
                     return;
                 }
 
@@ -430,67 +734,80 @@
                     const hazardTitle = hazardItem.querySelector('.hazard-title').textContent;
                     const controls = hazardItem.querySelectorAll('.control-item');
 
-                    let controlsHTML = '<ul style="margin:0; padding-left:20px;">';
+                    let displayControlsHTML = '<ul style="margin:0; padding-left:20px;">';
+                    let copyControlsHTML = '<ul style="margin:0; padding-left:20px;">';
+
                     if (controls.length === 0) {
-                        controlsHTML = "No controls found.";
+                        displayControlsHTML = "No controls found.";
+                        copyControlsHTML = "No controls found.";
                     } else {
                         controls.forEach(control => {
-                            controlsHTML += `<li>${control.textContent}</li>`;
+                            displayControlsHTML += `<li>${control.textContent}</li>`;
+                            copyControlsHTML += `<li>${control.textContent}</li>`;
                         });
-                        controlsHTML += '</ul>';
+                        displayControlsHTML += '</ul>';
+                        copyControlsHTML += '</ul>';
                     }
 
                     // Render rows (with rowspan for action title on first hazard)
                     if (hIndex === 0) {
-                        tableHTML += `
+                        displayTableHTML += `
                             <tr>
-                                <td rowspan="${hazards.length}" style="vertical-align: top;"><strong>${actionTitle}</strong></td>
-                                <td style="vertical-align: top; color: #e67e22;">${hazardTitle}</td>
-                                <td style="vertical-align: top;">${controlsHTML}</td>
+                                <td rowspan="${hazards.length}"><strong>${actionTitle}</strong></td>
+                                <td style="color: var(--hazard-color); font-weight: 500;">${hazardTitle}</td>
+                                <td>${displayControlsHTML}</td>
+                            </tr>
+                        `;
+                        copyTableHTML += `
+                            <tr>
+                                <td rowspan="${hazards.length}" style="padding: 8px; vertical-align: top;"><strong>${actionTitle}</strong></td>
+                                <td style="padding: 8px; vertical-align: top;">${hazardTitle}</td>
+                                <td style="padding: 8px; vertical-align: top;">${copyControlsHTML}</td>
                             </tr>
                         `;
                     } else {
-                        tableHTML += `
+                        displayTableHTML += `
                             <tr>
-                                <td style="vertical-align: top; color: #e67e22;">${hazardTitle}</td>
-                                <td style="vertical-align: top;">${controlsHTML}</td>
+                                <td style="color: var(--hazard-color); font-weight: 500;">${hazardTitle}</td>
+                                <td>${displayControlsHTML}</td>
+                            </tr>
+                        `;
+                        copyTableHTML += `
+                            <tr>
+                                <td style="padding: 8px; vertical-align: top;">${hazardTitle}</td>
+                                <td style="padding: 8px; vertical-align: top;">${copyControlsHTML}</td>
                             </tr>
                         `;
                     }
                 });
             });
 
-            tableHTML += `
-                    </tbody>
-                </table>
-            `;
+            displayTableHTML += `</tbody></table>`;
+            copyTableHTML += `</tbody></table>`;
 
-            // Hide main app elements
-            document.getElementById('inputSection').style.display = 'none';
-            document.getElementById('suggestionsArea').style.display = 'none';
-            document.getElementById('actionsContainer').style.display = 'none';
-            document.getElementById('finalizeBtn').style.display = 'none';
+            // Hide main layout
+            document.getElementById('mainLayout').style.display = 'none';
 
-            // Show table
+            // Show display table
             const tableContainer = document.getElementById('finalTableContainer');
-            document.getElementById('tableWrapper').innerHTML = tableHTML;
+            document.getElementById('tableWrapper').innerHTML = displayTableHTML;
             tableContainer.style.display = 'block';
+
+            // Insert copy table into hidden container
+            document.getElementById('hiddenCopyTableContainer').innerHTML = copyTableHTML;
         }
 
         // 5. Reset View
         function resetView() {
-            document.getElementById('inputSection').style.display = 'flex';
-            document.getElementById('suggestionsArea').style.display = 'flex';
-            document.getElementById('actionsContainer').style.display = 'block';
-            document.getElementById('finalizeBtn').style.display = 'block';
+            document.getElementById('mainLayout').style.display = 'flex';
             document.getElementById('finalTableContainer').style.display = 'none';
         }
 
-        // 6. Copy Table to Clipboard
+        // 6. Copy Table to Clipboard (using the clean table)
         function copyTable() {
-            const table = document.getElementById('assessmentTable');
+            const copyTableElement = document.getElementById('copyTable');
             const range = document.createRange();
-            range.selectNode(table);
+            range.selectNode(copyTableElement);
             window.getSelection().removeAllRanges();
             window.getSelection().addRange(range);
 

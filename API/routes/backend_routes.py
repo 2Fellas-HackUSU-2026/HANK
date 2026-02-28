@@ -4,14 +4,14 @@ from tools.backend_route_tools import add_hazards, add_controls, get_user_topic,
 router = APIRouter()
 
 @router.post("/api/add-hazard")
-def new_hazards(topic: str, action: str):
-    hazard_list = add_hazards(topic=topic, action=action)
+def new_hazards(topic: str, action: str, num_hazards: int = 5):
+    hazard_list = add_hazards(topic=topic, action=action, num_hazards=num_hazards)
     return {"hazard_list": hazard_list}
 
 
 @router.post("/api/add-control")
-def new_controls(topic: str, action: str, hazard: str):
-    controls_list = add_controls(topic=topic, action=action, hazard=hazard)
+def new_controls(topic: str, action: str, hazard: str, num_controls: int = 3):
+    controls_list = add_controls(topic=topic, action=action, hazard=hazard, num_controls=num_controls)
     return {"controls_list": controls_list}
 
 @router.post("/api/set-user-topic")
