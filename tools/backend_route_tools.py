@@ -1,6 +1,7 @@
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
+
 def add_hazards(topic: str, action: str):
     """
     Prompts the agent to come up with hazards associated with the action param. Use topic param as context to decide with what lens to view the problem at hand. 
