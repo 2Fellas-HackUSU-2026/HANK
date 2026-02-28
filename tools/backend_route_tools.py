@@ -4,6 +4,9 @@ from agent.agent import agent
 
 class HazardResponse(BaseModel):
     hazards: list[str]
+
+class ControlReponse(BaseModel):
+    controls: list[str]
     
 
 def add_hazards(topic: str, action: str):
@@ -43,14 +46,13 @@ def add_controls(topic: str, action: str, hazard):
     """
 
     prompt = f"""
-    as an expert with {topic}, your job is to come up with a well thought out list of both engineering, adminstrative controls to mitigate the risks that might be associated with {hazard}. The controls you come up with should be relavent to the {action} while mitigating the risks of the {hazard}. 
-
-    You should provide your findings as a list.
+    As an expert with {topic}, your job is to come up with a well thought out list of both engineering, adminstrative controls to mitigate the risks that might be associated with {hazard}. The controls you come up with should be relavent to the {action} while mitigating the risks of the {hazard}. The control should be written in less than 12 words.
     """
+    query = f"What is a list of 1 to 8 controls to mitgate the {hazard}"
 
-    #agent.invoke()
-    controls = []
-    return controls
+    controls = agent(system_prompt= prompt, query= query, return_format= ControlReponse)
+
+    return controls.controls
     
 def get_user_topic(topic: str):
     topic = topic
@@ -59,3 +61,8 @@ def get_user_topic(topic: str):
 def add_action(action_step: str):
     action = action_step
     return action
+
+def add_to_json(action: str, single_hazard: str, control_list: list[str]):
+    template = {"action_step": action, "hazards": {single_hazard: {"controls": [control]}} }
+
+    new_template = {"action": action, "hazards": [{"hazard": single_hazard, "controls": control_list}]}
