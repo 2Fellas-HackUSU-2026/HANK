@@ -19,7 +19,7 @@ def add_hazards(topic: str, action: str):
     :return type: list
     """
 
-    prompt = f"As an expert with {topic}, your job is to come up with a well thought out list of hazards that might be associated with {action}."
+    prompt = f"As an expert with {topic}, your job is to come up with a well thought out list of hazards that might be associated with {action}. Your hazards should be writen in 2-4 words."
     query = f"What is a list of 5 to 10 hazards when performing {action}"
 
     hazards = agent(system_prompt= prompt, query= query, return_format= HazardResponse)
@@ -52,7 +52,7 @@ def add_controls(topic: str, action: str, hazard):
     controls = []
     return controls
     
-def user_topic(topic: str):
+def get_user_topic(topic: str):
     topic = topic
     return topic
 
