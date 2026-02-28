@@ -1,0 +1,54 @@
+[
+    {
+        "action": "subgrade excavation",
+        "hazards": [
+            {
+                "hazard": "Uneven ground surfaces",
+                "controls": []
+            },
+            {
+                "hazard": "Trench collapses",
+                "controls": []
+            },
+            {
+                "hazard": "Equipment overturns",
+                "controls": []
+            },
+            {
+                "hazard": "Falling debris",
+                "controls": []
+            },
+            {
+                "hazard": "Dust inhalation",
+                "controls": []
+            },
+            {
+                "hazard": "Heavy machinery accidents",
+                "controls": []
+            },
+            {
+                "hazard": "Underground utility strikes",
+                "controls": []
+            },
+            {
+                "hazard": "Flooding or water ingress",
+                "controls": []
+            },
+            {
+                "hazard": "Poor visibility",
+                "controls": []
+            },
+            {
+                "hazard": "Noise pollution",
+                "controls": []
+            }
+        ]
+    },
+    {
+        "action": {
+            "action": "subgrade excavation",
+            "hazards": []
+        },
+        "hazards": []
+    }
+]
